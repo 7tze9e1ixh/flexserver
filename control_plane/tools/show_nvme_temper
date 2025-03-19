@@ -1,0 +1,11 @@
+#!/bin/bash
+
+while :
+do
+	for d in /dev/nvme{0..3}
+	do
+		echo "$d - $(sudo nvme smart-log $d | grep -i '^temperature')"
+	done
+	echo "----------------------------------------------------------------------"
+	sleep 1
+done

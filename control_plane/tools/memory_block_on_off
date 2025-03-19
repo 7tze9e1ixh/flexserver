@@ -1,0 +1,13 @@
+#!/bin/bash
+NUM_MEMORY_BLOCK=48
+PATH_PREFIX="/sys/devices/system/memory/"
+
+for i in $(seq 8 1 ${NUM_MEMORY_BLOCK})
+do
+	#echo ${i}
+	echo $1 > ${PATH_PREFIX}"memory${i}/online"
+	#echo ${PATH_PREFIX}"memory${i}/online"
+done
+
+
+#echo $1 > ${PATH_PREFIX}"memory46/online"

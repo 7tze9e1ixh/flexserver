@@ -1,0 +1,19 @@
+#!/bin/bash
+#cp /srv/nvme0/50G_1M /srv/nvme1/50G_1M -r &
+#cp /srv/nvme0/50G_1M /srv/nvme2/50G_1M -r &
+#cp /srv/nvme0/50G_1M /srv/nvme3/50G_1M -r &
+#cp /srv/nvme0/50G_1M /srv/nvme4/50G_1M -r &
+#cp /srv/nvme0/50G_1M /srv/nvme5/50G_1M -r 
+
+
+cp /srv/nvme0/50G_1.5M /srv/nvme1/50G_1.5M -r &
+cp /srv/nvme0/50G_1.5M /srv/nvme2/50G_1.5M -r &
+cp /srv/nvme0/50G_1.5M /srv/nvme3/50G_1.5M -r &
+cp /srv/nvme0/50G_1.5M /srv/nvme4/50G_1.5M -r &
+cp /srv/nvme0/50G_1.5M /srv/nvme5/50G_1.5M -r &
+
+cp /srv/nvme0/50G_2M /srv/nvme1/50G_2M -r &
+cp /srv/nvme0/50G_2M /srv/nvme2/50G_2M -r &
+cp /srv/nvme0/50G_2M /srv/nvme3/50G_2M -r &
+cp /srv/nvme0/50G_2M /srv/nvme4/50G_2M -r &
+cp /srv/nvme0/50G_2M /srv/nvme5/50G_2M -r 

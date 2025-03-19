@@ -1,0 +1,20 @@
+option('RTE_TARGET',
+		type : 'string',
+		value : 'x86_64-native-linuxapp-gcc',
+		description : 'RTE_TARGET path, (ex, x86_64-native-linuxapp-gcc)'
+		)
+
+option('RTE_SDK',
+		type : 'string',
+		value : '/usr/src/dpdk-20.05/',
+		description : 'RTE_SDK path, (ex home/dpdk20.05)')
+
+option('HOST_CACHE',
+		type : 'string',
+		value : 'hyperbolic',
+		description : 'HOST CACHE')
+
+option('NIC_CACHE',
+		type : 'string',
+		value : 'hyperbolic',
+		description : 'NIC CACHE')

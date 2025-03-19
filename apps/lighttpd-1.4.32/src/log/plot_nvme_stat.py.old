@@ -1,0 +1,70 @@
+import csv
+import math
+import matplotlib.pyplot as plt
+import time
+
+NUM_NVMES=4
+
+fn="nvme_stat.csv"
+now = time.strftime("%m-%d-%H:%M:%S")
+output = "log/nvme_stat/" + now + "-throughput.png"
+
+nvme_throughput = [[] for _ in range(NUM_NVMES)]
+net_throughput = []
+latency = []
+sum_nvme_throughput = []
+n_row = 0
+
+plt.figure(figsize=(16,16))
+
+max_lat = 0
+max_row = 0
+
+with open(fn) as f_csv :
+    csv_rdr = csv.reader(f_csv)
+    for row in csv_rdr :
+        s = 0
+        for i in range(NUM_NVMES) :
+            row_list = list(map(float, row))
+            nvme_throughput[i].append(row_list[i])
+            s = row_list[i]
+
+        net_throughput.append(row_list[NUM_NVMES])
+        sum_nvme_throughput.append(s)
+        """
+        if row_list[-1] == 0 :
+            res = 0
+        else :
+            res = math.log(row_list[-1], 10)
+        """
+        res = row_list[-1]
+        if res == math.inf :
+            res = 0
+        latency.append(res)
+
+        if max_lat < res :
+            max_lat = res
+            max_row = n_row
+
+        n_row += 1
+
+print("max_row : ", max_row, max_lat)
+
+t = [i for i in range(n_row)]
+
+plt.figure(1)
+for i in range(1, NUM_NVMES + 1) :
+
+    ax1 = plt.subplot(2, 2, i)
+    ax1.set_xlabel("ms")
+    ax1.set_ylabel("gbps")
+    ax1.set_ylim(0, 2000)
+    ax1.plot(t, nvme_throughput[i-1], label="nvme" + str(i), color='blue')
+
+    ax2 = ax1.twinx()
+    ax2.set_ylabel('us(10^t)')
+
+    ax2.plot(t, latency, color='red')
+
+plt.tight_layout()
+plt.savefig(output)

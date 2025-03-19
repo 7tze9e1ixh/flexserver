@@ -1,0 +1,73 @@
+#!/bin/bash
+# Create sample testing files for server 
+
+F_PATH="/srv/nvme5"
+F_SZ=0
+NB_FILES=0
+DIR_NAME="500G_1.5M"
+
+CreateUniformSizeFiles() {
+
+	F_SUFFIX=".html"
+	F_DIR="${F_PATH}/${DIR_NAME}/"
+
+	if [ $NB_FILES == 0 ]; then
+		echo "Number of files must be > 0"
+		exit 1
+	fi
+
+	if [ $F_SZ == 0 ]; then
+		echo "File size must be > 0"
+		exit 1
+	fi
+
+	echo "Create ${NB_FILES} uniform size file at ${F_DIR}..."
+
+	rm -rf ${F_DIR}
+	mkdir -p  ${F_DIR}
+
+	F_PREFIX="${F_DIR}/sample"
+	SZ=`expr $F_SZ \* 1024`
+
+	for n in $(seq 1 $NB_FILES)
+	do
+		F_NM=`printf "${F_PREFIX}${F_SZ}KB_%08g.html" $n`
+		dd if=/dev/urandom of=${F_NM} bs=1024 count=${F_SZ} 2> /dev/null
+#		cp /srv/offload_test/test.html $F_NM
+	done
+
+	#cp ${F_DIR} "/srv/nvme1/." -r 
+	#cp ${F_DIR} "/srv/nvme2/." -r 
+	#cp ${F_DIR} "/srv/nvme3/." -r 
+
+	echo "Complete to create ${NB_FILES} files(${F_SZ}KB)"
+}
+
+CreateNonUniformSizedFiles() {
+
+	echo "Create non-uniform size file at ${F_DIR}"
+}
+
+RunGenFile() {
+	if [ $1 == "--help" ]; then
+		echo "./RunGenFile <uniform/other> <number of files to be generated> <size of files(KB)>"
+		exit 0
+	fi
+
+	echo $1
+
+	DIST=$1
+	NB_FILES=$2
+	F_SZ=$3
+
+	if [ $DIST == "uniform" ]; then
+		CreateUniformSizeFiles
+	elif [$DIST == "non-uniform" ]; then
+		CreateNonUniformSizedFiles
+	else 
+		echo "Wrong distribution option, the option must be uniform or non-uniform"
+		exit 1
+	fi
+}
+
+RunGenFile $1 $2 $3

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+lsof -p `pgrep -f ./lighttpd` | wc -l
