@@ -297,7 +297,7 @@ modify test/http/client_cps.conf in dperf directory.
 ```sh
 cpu 0-7
 cps 0
-cc=1000
+cc 1000
 keepalive 0ms
 rss
 fast_close
