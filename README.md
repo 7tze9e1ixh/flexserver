@@ -286,14 +286,14 @@ We provide scripts for network and nvme settings.
 
 ## Run Client
 We used dperf as a client to evaluate performance of Flexserver.
-Install
+- Install
 ```sh
 git clone https://github.com/baidu/dperf.git
 make -j
 ```
 
 modify test/http/client_cps.conf in dperf directory.
-Our setting is 
+- Our setting is 
 ```sh
 cpu 0-7
 cps 0
@@ -305,7 +305,7 @@ fast_close
 
 You need to change tcp_new_packet function in src/tcp.c if you want to request multiple files.
 
-Run
+- Run
 ```sh
 sudo build/dperf -c test/http/client_cps.conf
 ```
