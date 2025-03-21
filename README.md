@@ -9,6 +9,8 @@ It combines an user level TCP stack mTCP with io_uring and it utilize host and s
 3. [How to Build](#How-to-Build)
 4. [Configurations](#Configurations)
 5. [Run Flexserver](#Run-Flexserver)
+6. [Run Client](#Run-Client)
+
 
 ## Structure of Flexserver
 
@@ -85,16 +87,16 @@ git clone <flexserver-repo>
     git clone https://github.com/Cyan4973/xxHash.git
     cd <cloned-dir>
     make -j
-    make install
+    sudo make install
     ```
 
 - IO-uring
     - We used liburing_2.6 both host and SmartNIC
     ```sh
-    git clone https://github.com/Cyan4973/xxHash.git
-    cd <cloned-dir>
-    make -j
-    make install
+    git clone https://github.com/axboe/liburing.git
+	cd <cloned-dir>
+	make -j
+	sudo make install
     ```
 
 ### NIC Installation
@@ -107,7 +109,7 @@ git clone <flexserver-repo>
 - IO-uring
     - We used liburing_2.6 both host and SmartNIC
     ```sh
-    git clone https://github.com/Cyan4973/xxHash.git
+    git clone https://github.com/axboe/liburing.git
     cd <cloned-dir>
     make -j
     make install
@@ -240,8 +242,11 @@ This is optional, and you should rebuild flexserver when you change these option
 We provide scripts for network and nvme settings.
 - Setting network interfaces and hugepages.
     ```sh
-    (host) sudo ./script/host_params_setup.sh
-    (snic) sudo ./script/arm_params_setup.sh
+    (host) sudo ./script/host_params_setup.sh <interface>
+    (snic) sudo ./script/arm_params_setup.sh <interface>
+
+	(example) sudo ./script/host_params_setup.sh ens5f0np0
+	(example) sudo ./script/arm_params_setup.sh p0
     ```
 
 - NVMe-oF
@@ -259,7 +264,7 @@ We provide scripts for network and nvme settings.
 - Client Machine setup
     This is for benchmark
     ```sh
-    sudo ./script/setup_client.sh
+    sudo ./script/setup_client.sh <interface>
     ```
 
 - run with snic cache
@@ -279,6 +284,28 @@ We provide scripts for network and nvme settings.
     ```
 
 
+## Run Client
+We used dperf as a client to evaluate performance of Flexserver.
+Install
+```sh
+git clone https://github.com/baidu/dperf.git
+make -j
+```
 
+modify test/http/client_cps.conf in dperf directory.
+Our setting is 
+```sh
+cpu 0-7
+cps 0
+cc=1000
+keepalive 0ms
+rss
+fast_close
+```
 
+You need to change tcp_new_packet function in src/tcp.c if you want to request multiple files.
 
+Run
+```sh
+sudo build/dperf -c test/http/client_cps.conf
+```
